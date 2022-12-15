@@ -5,14 +5,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('KREIRANJE ALATA') }}</div>
+                <div class="card-header">{{ __('UNOS KORISNIKA') }}</div>
                 <div class="container">
                     <div class="row">
                     </div>
                 </div>
                 <div class="card-body">
 
-                    <form class="row g-3 needs-validation" action="{{ url('upload') }}" method="post">
+                    <form class="row g-3 needs-validation" action="{{ url('create') }}" method="post">
                         {{ csrf_field() }}
                   
                         <div class="col-md-6">

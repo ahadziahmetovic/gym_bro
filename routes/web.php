@@ -23,7 +23,7 @@ Route::group([
     'excluded_middleware' => ['auth'],
   ], function () {
     
-    Route::post('/upload', [MemberController::class, 'upload'])->name('upload');
+    Route::post('/create', [MemberController::class, 'create'])->name('create');
     Route::post('/test', [HomeController::class, 'test'])->name('test');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/createMember', [MemberController::class, 'index'])->name('createMember');

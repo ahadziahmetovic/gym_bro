@@ -25,41 +25,30 @@ class MemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
-    }
-    
-    public function upload(Request $request){
-      
-     
+        // Upload slike i prikaz putanje
+        if( $request->hasFile('uploadfile')) {
+            $image = $request->file('uploadfile');
+            $path = public_path(). '/images/';
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $image->move($path, $filename);
+         // dd($path);
         
+         
+        }
+
+        $member = new Member();
+        $member->name= $request->name;
+        $member->surname= $request->surname;
+        $member->code= $request->code;
+        $member->jmbg= $request->jmbg;
+        $member->register_date = $request->register_date;
+        $member->image_path = $request->path;
+        $member->save();
+    }
+    
  
-
-    if( $request->hasFile('uploadfile')) {
-        $image = $request->file('uploadfile');
-        $path = public_path(). '/images/';
-        $filename = time() . '.' . $image->getClientOriginalExtension();
-        $image->move($path, $filename);
-       dd($path);
-    
-      //  $post->image = $path;
-    }
-    
-    
-    //$post->save();
-
-
-          
-    }
-
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreMemberRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(StoreMemberRequest $request)
     {
         
