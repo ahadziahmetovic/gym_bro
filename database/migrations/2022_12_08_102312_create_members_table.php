@@ -21,6 +21,9 @@ class CreateMembersTable extends Migration
             $table->bigInteger('jmbg');
             $table->date('register_date');
             $table->string('image_path');
+            $table->string('street');
+            $table->string('post_no');
+            $table->string('city');
             $table->timestamps();
         });
     }

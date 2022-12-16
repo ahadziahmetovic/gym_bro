@@ -26,7 +26,9 @@ Route::group([
     Route::post('/create', [MemberController::class, 'create'])->name('create');
     Route::post('/test', [HomeController::class, 'test'])->name('test');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/memberProfile', [MemberController::class, 'profile'])->name('profile');
     Route::get('/createMember', [MemberController::class, 'index'])->name('createMember');
+    Route::get('/attendence', [MemberController::class, 'attendence'])->name('attendence');
 
   
   });
@@ -36,3 +38,7 @@ Auth::routes();
 
 
 
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

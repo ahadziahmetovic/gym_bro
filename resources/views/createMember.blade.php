@@ -12,45 +12,53 @@
                 </div>
                 <div class="card-body">
 
-                    <form class="row g-3 needs-validation" action="{{ url('create') }}" method="post">
+                    <form class="row g-3 needs-validation" action="{{ route('create') }}" method="post" enctype="multipart/form-data">
                         {{ csrf_field() }}
                   
                         <div class="col-md-6">
                             <label for="inputEmail4" class="form-label">Ime</label>
-                            <input type="text" class="form-control" id="inputEmail4" name="name" required>
-                            <div class="invalid-feedback">
-                                Popunite polje sa imenom.
-                              </div>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                            
                         </div>
                         <div class="col-md-6">
                             <label for="inputPassword4" class="form-label">Prezime</label>
-                            <input type="text" class="form-control" id="inputPassword4" name="naziv" required>
+                            <input type="text" class="form-control" id="surname" name="surname" required>
                         </div>
-                        <div class="col-12">
-                            <label for="inputAddress" class="form-label">Opis</label>
-                            <input type="text" class="form-control" id="inputAddress" placeholder="" name="opis" required>
+                        <div class="col-4">
+                            <label for="inputAddress" class="form-label">Code</label>
+                            <input type="text" class="form-control" id="code" placeholder="" name="code" required>
+                        </div>
+                        <div class="col-8">
+                            <label for="inputAddress" class="form-label">JMBG</label>
+                            <input type="text" class="form-control" id="jmbg" placeholder="" name="jmbg" required>
                         </div>
                    
-                        <div class="col-md-6">
-                            <label for="inputCity" class="form-label">Datum</label>
-                            <input type="text" class="form-control" id="inputCity" disabled>
+                        <div class="col-4">
+                            <label for="inputAddress" class="form-label">Datum registracija</label>
+                            <?php 
+                           
+                            $mytime = Carbon\Carbon::now();
+                            ?>
+                            <input type="text" class="form-control" id="register_date" placeholder="{{$mytime}}" name="register_date" required>
+                        </div>
+                    
+                        <div class="image col-md-8">
+                            <label for="inputState" class="form-label">Upload slike</label>
+                            <input class="form-control" type="file" id="image" name="image">
+                        </div>
+                        <div class="col-md-5">
+                            <label for="inputZip" class="form-label">Ulica</label>
+                            <input type="text" class="form-control" id="street" name="street" required style="text-align: right" aria-describedby="customFileInput">
+                        </div>
+                        <div class="col-md-3">
+                            <label for="inputZip" class="form-label">Poštanski broj</label>
+                            <input type="number" class="form-control" id="post_no" name="post_no" required style="text-align: right" aria-describedby="customFileInput">
                         </div>
                         <div class="col-md-4">
-                            <label for="inputState" class="form-label">Upload slike</label>
-                            <input class="form-control" type="file" id="formFile">
+                            <label for="inputZip" class="form-label">Grad</label>
+                            <input type="text" class="form-control" id="city" name="city" required style="text-align: right" aria-describedby="customFileInput">
                         </div>
-                        <div class="col-md-2">
-                            <label for="inputZip" class="form-label">Limit</label>
-                            <input type="text" class="form-control" id="inputZip" name="limit" required style="text-align: right" aria-describedby="customFileInput">
-                        </div>
-                        <div class="col-12">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="gridCheck">
-                                <label class="form-check-label" for="gridCheck">
-                                    Aktiviraj
-                                </label>
-                            </div>
-                        </div>
+                     
                         <div class="col-12">
                             <button type="submit" class="btn btn-primary">Snimi</button>
                         </div>

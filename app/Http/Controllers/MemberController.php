@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Member;
 use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon as SupportCarbon;
+use Illuminate\Support\Facades\Log;
 
 class MemberController extends Controller
 {
@@ -27,25 +30,55 @@ class MemberController extends Controller
      */
     public function create(Request $request)
     {
+        $member= new Member();
+        Log::info($request);
+
+         if($request->file('image')){
+            $file= $request->file('image');
+            $filename= date('YmdHi').$file->getClientOriginalName();
+            $path = public_path(). '/images/';
+           // $file-> move(public_path('public/images'), $filename);
+            $file->move($path, $filename);
+            
+        } 
+            $member->name= $request->name;
+            $member->surname= $request->surname;
+            $member->code= $request->code;
+            $member->jmbg= $request->jmbg;
+            $member->register_date = Carbon::now();
+            $member->street = $request->street;
+            $member->post_no = $request->post_no;
+            $member->city = $request->city;
+            $member->image_path= $filename;
+        $member->save();
+        return redirect()->route('createMember');
+
+
+     
         // Upload slike i prikaz putanje
-        if( $request->hasFile('uploadfile')) {
+        /* if( $request->hasFile('uploadfile')) {
             $image = $request->file('uploadfile');
             $path = public_path(). '/images/';
             $filename = time() . '.' . $image->getClientOriginalExtension();
             $image->move($path, $filename);
-         // dd($path);
+           
+            
+        
         
          
-        }
+        } */
 
-        $member = new Member();
+      /*   $member = new Member();
         $member->name= $request->name;
         $member->surname= $request->surname;
         $member->code= $request->code;
         $member->jmbg= $request->jmbg;
-        $member->register_date = $request->register_date;
+        $member->register_date = Carbon::now();
         $member->image_path = $request->path;
-        $member->save();
+        $member->street = $request->street;
+        $member->post_no = $request->post_no;
+        $member->city = $request->city;
+        $member->save(); */
     }
     
  
@@ -110,5 +143,11 @@ class MemberController extends Controller
         $test->save(); */
         //echo "firstname: $firstname lastname: $lastname password: $password";
 
+    }
+    public function profile(){
+        return view('memberProfile');
+    }
+    public function attendence(){
+        return view('attendence');
     }
 }
