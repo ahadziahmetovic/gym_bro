@@ -147,7 +147,46 @@ class MemberController extends Controller
     public function profile(){
         return view('memberProfile');
     }
-    public function attendence(){
-        return view('attendence');
+    public function attendance(){
+        return view('attendance');
+    }
+    public function slanje(Request $request){
+
+        $id = $request->postObj['id'];
+        $date_ = Carbon::now();
+        $date = $date_->toDateString();
+       /*  $end = Member::join('fees', 'fees.member_id', '=', 'members.id')
+        ->where([
+            ['members.code',$id],
+            ['fees.end','=>',$date]])
+            ->get(); */
+
+        $end = Member::select("members.*","fees.end as rok")
+            ->join("fees","fees.member_id","=","members.id")
+            ->where([
+                ['members.code', '=', $id],
+                ['fees.end','>=',$date],
+               
+              
+            ])
+           
+            ->get();
+
+        $user = Member::join('fees', 'fees.member_id', '=', 'members.id')
+        ->where('members.code', $id)
+        ->get(['members.*','fees.end as end']);
+    
+
+     Log::info($end); 
+
+  if($user){
+            $json = json_encode(['response' => $user], true);
+            echo $json;
+
+        } else{
+            $json = json_encode(['response' => $id], true);
+            echo $json;
+        } 
+        
     }
 }

@@ -5,21 +5,23 @@
         <div class="row justify-content-center">
             <div class="col-md-4">
                 <div class="card">
-                    <div class="card-header text-center">{{ __('PRIJAVA / ODJAVA') }}</div>
+                    <div  class="card-header text-center">{{ __('EVIDENCIJA') }}</div>
            
-                      <div class="card-body">
+                      <div id="okvir" class="card-body">
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="card mb-4">
                                     <div class="card-body text-center">
-                                        <img src="{{ URL::asset('/images/avatar.jpg') }}"
+                                     
+                                        <img id="pic" name="pic" src="{{URL::asset('/images/avatar.jpg') }}"
                                             alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
-                                        <h5 class="my-3">John Smith</h5>
-                                        <p class="text-muted mb-1">Full Stack Developer</p>
-                                        <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
+                                        <h5 id="name" name="name" class="my-3">Ime i prezime</h5>
+                                        <p class="text-muted mb-1">STATUS</p>
+                                        <p id="status" name="status" class="mb-8">PRIJAVA / ODJAVA</p>
                                         <div class="d-flex justify-content-center mb-2">
-                                    {{--         <button type="button" class="btn btn-primary">Follow</button>
-                                            <button type="button" class="btn btn-outline-primary ms-1">Message</button> --}}
+                                            <p id="inout" name="status" class="mb-8"></p>
+                                        {{--  <button type="button" class="btn btn-primary">Follow</button> --}}
+                                        {{--  <button type="button" class="btn btn-outline-primary ms-1">Message</button> --}}
                                         </div>
                                     </div>
                                 </div>

@@ -10,9 +10,9 @@
     <div class="col-lg-4">
       <div class="card mb-4">
         <div class="card-body text-center">
-          <img src="{{URL::asset('/images/202212151334alatnica_thumb52.jpg')}}" alt="avatar"
+          <img src="{{URL::asset('/images/202212172004ahmet.png')}}" alt="avatar"
             class="rounded-circle img-fluid" style="width: 150px;">
-          <h5 class="my-3">John Smith</h5>
+          <h5 id="name" name="name" class="my-3">Ime i prezime</h5>
           <p class="text-muted mb-1">Full Stack Developer</p>
           <p class="text-muted mb-4">Bay Area, San Francisco, CA</p>
           <div class="d-flex justify-content-center mb-2">

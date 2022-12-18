@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Fee extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'date',
+        'start',
+        'end',
+        'amaount',
+        'comment',     
+
+    ];
 }
