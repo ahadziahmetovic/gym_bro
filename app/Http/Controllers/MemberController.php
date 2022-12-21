@@ -5,14 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Member;
 use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
+use App\Models\Attendance;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon as SupportCarbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class MemberController extends Controller
 {
-   
+
     /**
      * Display a listing of the resource.
      *
@@ -30,31 +32,30 @@ class MemberController extends Controller
      */
     public function create(Request $request)
     {
-        $member= new Member();
+        $member = new Member();
         Log::info($request);
 
-         if($request->file('image')){
-            $file= $request->file('image');
-            $filename= date('YmdHi').$file->getClientOriginalName();
-            $path = public_path(). '/images/';
-           // $file-> move(public_path('public/images'), $filename);
+        if ($request->file('image')) {
+            $file = $request->file('image');
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $path = public_path() . '/images/';
+            // $file-> move(public_path('public/images'), $filename);
             $file->move($path, $filename);
-            
-        } 
-            $member->name= $request->name;
-            $member->surname= $request->surname;
-            $member->code= $request->code;
-            $member->jmbg= $request->jmbg;
-            $member->register_date = Carbon::now();
-            $member->street = $request->street;
-            $member->post_no = $request->post_no;
-            $member->city = $request->city;
-            $member->image_path= $filename;
+        }
+        $member->name = $request->name;
+        $member->surname = $request->surname;
+        $member->code = $request->code;
+        $member->jmbg = $request->jmbg;
+        $member->register_date = Carbon::now();
+        $member->street = $request->street;
+        $member->post_no = $request->post_no;
+        $member->city = $request->city;
+        $member->image_path = $filename;
         $member->save();
         return redirect()->route('createMember');
 
 
-     
+
         // Upload slike i prikaz putanje
         /* if( $request->hasFile('uploadfile')) {
             $image = $request->file('uploadfile');
@@ -68,7 +69,7 @@ class MemberController extends Controller
          
         } */
 
-      /*   $member = new Member();
+        /*   $member = new Member();
         $member->name= $request->name;
         $member->surname= $request->surname;
         $member->code= $request->code;
@@ -80,11 +81,10 @@ class MemberController extends Controller
         $member->city = $request->city;
         $member->save(); */
     }
-    
- 
+
+
     public function store(StoreMemberRequest $request)
     {
-        
     }
 
     /**
@@ -134,59 +134,110 @@ class MemberController extends Controller
 
     public function test(Request $request)
     {
-      /*   $firstname = htmlspecialchars($_GET["firstname"]);
+        /*   $firstname = htmlspecialchars($_GET["firstname"]);
         $lastname = htmlspecialchars($_GET["lastname"]);
         $password = htmlspecialchars($_GET["password"]); */
         //Log::info();
-       /*  $test = new Test();
+        /*  $test = new Test();
         $test->name = $request->firstname;
         $test->save(); */
         //echo "firstname: $firstname lastname: $lastname password: $password";
 
     }
-    public function profile(){
+    public function profile()
+    {
         return view('memberProfile');
     }
-    public function attendance(){
+    public function attendance()
+    {
         return view('attendance');
     }
-    public function slanje(Request $request){
+    public function slanje(Request $request)
+    {
 
         $id = $request->postObj['id'];
-        $date_ = Carbon::now();
-        $date = $date_->toDateString();
-       /*  $end = Member::join('fees', 'fees.member_id', '=', 'members.id')
-        ->where([
-            ['members.code',$id],
-            ['fees.end','=>',$date]])
-            ->get(); */
-
-        $end = Member::select("members.*","fees.end as rok")
-            ->join("fees","fees.member_id","=","members.id")
+        $date = Carbon::today()->toDateString();
+        $end = Member::select("fees.end as rok")
+            ->join("fees", "fees.member_id", "=", "members.id")
             ->where([
                 ['members.code', '=', $id],
-                ['fees.end','>=',$date],
-               
-              
+                ['fees.end', '>=', $date],
             ])
-           
             ->get();
 
-        $user = Member::join('fees', 'fees.member_id', '=', 'members.id')
-        ->where('members.code', $id)
-        ->get(['members.*','fees.end as end']);
-    
 
-     Log::info($end); 
+        Log::info($end[0]->rok);
+        if ($end[0]->rok >= $date) {
+            Log::info('Aktivan član');
+            Log::info('Carbon: ' . Carbon::now());
+            $user = Member::join('fees', 'fees.member_id', '=', 'members.id')
+                ->where('members.code', $id)
+                ->get(['members.*', 'fees.end as end']);
+            $user_id = $user[0]->id;
+            Log::info(Carbon::today()->toDateString());
+            //Dodaj u evidencije
 
-  if($user){
-            $json = json_encode(['response' => $user], true);
-            echo $json;
 
-        } else{
+
+            $provjera_evidencije = Attendance::where('member_id', $user_id)->OrderBy('id', 'DESC')->first();
+            Log::info($provjera_evidencije);
+            if ($provjera_evidencije) {
+                
+                if ($provjera_evidencije->status == 1) {
+                    Log::info('Uraditi Logout');
+                    //$provjera_evidencije->update(['out'=>Carbon::now()]);
+                    $provjera_evidencije->out = Carbon::now();
+                    $provjera_evidencije->status = 0;
+                    $provjera_evidencije->save();
+              
+                    $json = json_encode(['response' => $user], true);
+                    echo $json;
+                } elseif ($provjera_evidencije->status == 0) {
+                    $evidencije = new Attendance();
+                    $evidencije->in = Carbon::now();
+                    //$evidencije->out= Carbon::now();
+                    $evidencije->date = Carbon::today()->toDateString();
+                    $evidencije->status = 1;
+                    $evidencije->member_id = $user_id;
+                    $evidencije->save();
+                    $json = json_encode(['response' => $user], true);
+                    echo $json;
+                }
+            } else {
+                Log::info('Uraditi PRVI LOGIN');
+                $evidencije = new Attendance();
+                $evidencije->in = Carbon::now();
+                //$evidencije->out= Carbon::now();
+                $evidencije->date = Carbon::today()->toDateString();
+                $evidencije->status = 1;
+                $evidencije->member_id = $user_id;
+                $evidencije->save();
+
+                $json = json_encode(['response' => $user], true);
+                echo $json;
+            }
+        } else {
             $json = json_encode(['response' => $id], true);
             echo $json;
-        } 
-        
+        }
+
+        //Log::info($provjera_evidencije->status);
+        /*  $prov = $provjera_evidencije[0]->status; */
+
+        /*    Attendance::where('member_id',$id)->update(['out'=>Carbon::now(), 'status'=> 0])->first(); */
+        /*  if(isset($provjera_evidencije)){
+           
+
+         
+
+
+            $json = json_encode(['response' => $user], true);
+            echo $json;
+        } else {
+
+            $json = json_encode(['response' => $id], true);
+            echo $json;
+        }
+ */
     }
 }

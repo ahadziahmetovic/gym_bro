@@ -28,7 +28,7 @@ Route::group([
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/memberProfile', [MemberController::class, 'profile'])->name('profile');
     Route::get('/createMember', [MemberController::class, 'index'])->name('createMember');
-    Route::get('/attendence', [MemberController::class, 'attendance'])->name('attendance');
+    Route::get('/attendance', [MemberController::class, 'attendance'])->name('attendance');
     Route::post('/slanje', [MemberController::class, 'slanje'])->name('slanje');
 
   

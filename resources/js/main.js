@@ -25,11 +25,12 @@ document.querySelector('#sifra').addEventListener('keypress', function (e) {
       title: "What is AJAX",
       body: "AJAX stands for Asynchronous JavaScript..."
     }
+    $("#sifra").val("");
 
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
       /* the route pointing to the post function */
-      url: 'http://localhost:8080/gym/public/slanje',
+      url: 'http://192.168.100.136/gym/public/slanje',
       async: false,
       type: 'POST',
       /* send the csrf-token and the input to the controller */
@@ -59,14 +60,15 @@ document.querySelector('#sifra').addEventListener('keypress', function (e) {
         if (trenutni_datum <= end) {
           console.log('Članarina nije istekla');
           $('#okvir').removeClass("bg-danger");
-          $('#okvir').addClass("bg-success");
+          //$('#okvir').addClass("bg-success");
+          $('#okvir').css("background-color", "#89F457");
           $("#status").text('');
           $("#status").text('ČLANARINA JE PLAĆENA');
           $("#inout").text('PRIJAVA').addClass("bg-success font-weight-bold rounded");
         } else {
           console.log('Članarina je istekla');
-          $('#okvir').removeClass("bg-success");
-          $('#okvir').addClass("bg-danger");
+          $('#okvir').removeClass("bg-success");  
+          $('#okvir').addClass("bg-danger"); // crvena #F3522E
         //  $("#status").text('');
           $("#status").addClass("text-white").addClass("bg-danger font-weight-bold rounded");
           $("#status").text('ČLANARINA JE ISTEKLA');
