@@ -15,7 +15,7 @@ class FeeController extends Controller
      */
     public function index()
     {
-        //
+        return view('createFee');
     }
 
     /**

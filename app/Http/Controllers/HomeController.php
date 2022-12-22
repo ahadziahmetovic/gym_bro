@@ -27,6 +27,11 @@ class HomeController extends Controller
     {
         return view('home');
     }
+
+    public function izvjestaj()
+    {
+        return view('izvjestaj');
+    }
    
 
     public function test(Request $request)

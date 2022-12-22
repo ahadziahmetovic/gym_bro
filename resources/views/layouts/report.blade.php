@@ -28,15 +28,39 @@
         type="text/css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
 
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script type="text/javascript" src="{{ URL::asset('js/datepicker.js') }}"></script>
- {{--    <link href="{{ asset('css/tabs.css') }}" rel="stylesheet"> --}}
+    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/tabs.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/navbar.css') }}" rel="stylesheet"> --}}
+
 </head>
+
 <body>
-   
-        <main class="py-4">
-            @yield('content')
-        </main>
+    <div id="app">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            <a class="navbar-brand" href="{{ url('/') }}">
+                <img src="{{ asset('/images/logo.png') }}" class="logo" />
+            </a>
+            <div class="container">
+                
+                </ul>
+            </div>
     </div>
+    </nav>
+
+    <main class="py-4">
+        @yield('content')
+    </main>
+    </div>
+    <!-- Footer -->
+    <footer class="text-center text-lg-start bg-light text-muted">
+        <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+            © 2022 Copyright:
+            <a class="text-reset fw-bold" href="https://pobjeda.com/">Pobjeda-Rudet dd</a>
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <!-- Footer -->
 </body>
+
+
 </html>

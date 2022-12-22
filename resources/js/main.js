@@ -30,7 +30,7 @@ document.querySelector('#sifra').addEventListener('keypress', function (e) {
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
     $.ajax({
       /* the route pointing to the post function */
-      url: 'http://192.168.100.136/gym/public/slanje',
+      url: 'slanje',
       async: false,
       type: 'POST',
       /* send the csrf-token and the input to the controller */

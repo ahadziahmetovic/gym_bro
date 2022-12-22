@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\FeeController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -26,12 +28,13 @@ Route::group([
     Route::post('/create', [MemberController::class, 'create'])->name('create');
     Route::post('/test', [HomeController::class, 'test'])->name('test');
     Route::get('/home', [HomeController::class, 'index'])->name('home');
+    Route::get('/izvjestaj', [HomeController::class, 'izvjestaj'])->name('izvjestaj');
     Route::get('/memberProfile', [MemberController::class, 'profile'])->name('profile');
     Route::get('/createMember', [MemberController::class, 'index'])->name('createMember');
+    Route::get('/createFee', [FeeController::class, 'index'])->name('createFee');
+    Route::get('/members', [MemberController::class, 'members'])->name('members');
     Route::get('/attendance', [MemberController::class, 'attendance'])->name('attendance');
     Route::post('/slanje', [MemberController::class, 'slanje'])->name('slanje');
-
-  
   });
   
 Auth::routes();
