@@ -12,28 +12,33 @@
                     </div>
                     <div class="card-body">
 
-                        <form class="row g-3 needs-validation" action="{{ route('createFee') }}" method="post"
+                        <form class="row g-3 needs-validation" action="{{ route('insertFee') }}" method="post"
                             enctype="multipart/form-data">
                             {{ csrf_field() }}
-
+                            <input style="display:none" type="id" name="member_id" value="{{$test['id']}}"/>
                             <div class="col-md-4">
                                 <label>Ime</label>
-                                <input type="text" class="form-control" id="name" name="name" disabled>
+                                <input type="text" class="form-control" id="name" name="name" value="{{$test['name']}}" disabled>
 
                             </div>
-                            <div class="col-md-8">
+                            <div class="col-md-5">
                                 <label >Prezime</label>
-                                <input type="text" class="form-control" id="surname" name="surname" disabled>
+                                <input type="text" class="form-control" id="surname" name="surname" value="{{$test['surname']}}" disabled>
+                            </div>
+                            <div class="col-md-3">
+                                <label >Iznos</label>
+                                <input type="number" class="form-control" id="amount" name="amount"  required>
                             </div>
                             <?php
                             
-                            $mytime = Carbon\Carbon::now();
+                            $mytime = Carbon\Carbon::today()->toDateString();
+                            
                             ?>
                             <div class="col-4">
                                 <label >Datum unosa</label>
-                                <div class="input-group date" data-date-format="dd.mm.yyyy">
-                                    <input type="text" class="form-control rounded text-center" id="datum_unosa" value="{{ $mytime }}"
-                                        name="datum_unosa" readonly>
+                                <div class="input-group date" >
+                                    <input type="text" class="form-control rounded text-center" id="date" value="{{ $mytime }}"
+                                        name="date" readonly>
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
 
                                 </div>
@@ -42,21 +47,24 @@
 
                             <div class="col-4">
                                 <label>Uplaćeno od: </label>
-                                <div id="datepicker" class="input-group date" data-date-format="dd.mm.yyyy">
-                                    <input class="form-control rounded text-center" type="text" id="from" name="from" readonly />
+                                <div id="datepicker" class="input-group date" data-date-format="yyyy-mm-dd">
+                                    <input class="form-control rounded text-center" type="text" id="start" name="start" readonly />
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 </div>
                             </div>
                             <div class="col-4">
                                 <label>Uplaćeno do: </label>
-                                <div id="datepicker2" class="input-group date" data-date-format="dd.mm.yyyy">
-                                    <input class="form-control rounded text-center" type="text" id="to" name="to"readonly />
+                                <div id="datepicker2" class="input-group date" data-date-format="yyyy-mm-dd">
+                                    <input class="form-control rounded text-center" type="text" id="end" name="end"readonly />
                                     <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
                                 </div>
                             </div>
+                            <div class="col-md-12">
+                                <label>Komentar</label>
+                                <textarea class="form-control" id="comment" name="comment" rows="2"></textarea>
+                            </div>
 
-
-                            <div class="col-12">
+                           <div class="col-12">
                                 <button type="submit" class="btn btn-primary">Snimi</button>
                             </div>
                         </form>

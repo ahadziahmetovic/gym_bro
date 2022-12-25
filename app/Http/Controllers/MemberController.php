@@ -24,6 +24,82 @@ class MemberController extends Controller
     {
         return view('createMember');
     }
+    public function members()
+    {
+        $stanje = Member::get();
+        Log::info($stanje);
+        return view('members',  ['stanje' => $stanje]);
+    }
+
+    public function updateMember(Request $request){
+
+         // dd($request->all());
+         Log::info($request->id);
+
+         if ($request->hasFile('image')) {
+            Log::info('Ima slika');
+            Log::info($request);
+
+            $file = $request->image;
+            $filename = date('YmdHi') . $file->getClientOriginalName();
+            $path = public_path() . '/images/';
+            $file->move($path, $filename);
+
+            Member::where('id', $request->id)
+            ->update([
+                'name' => $request->name,         
+                'surname' => $request->surname,
+                'code' => $request->code,
+                'jmbg' => $request->jmbg,
+                'register_date' => $request->register_date,
+                'image_path' => $filename,
+                'mobile' => $request->mobile,
+                'status' => $request->status,
+                'street' => $request->street,
+                'post_no' => $request->post_no,
+                'city' => $request->city,
+           ]);
+          
+            return redirect('members');  
+         }else{
+            Log::info('Nema slika');
+            Member::where('id', $request->id)
+            ->update([
+                'name' => $request->name,         
+                'surname' => $request->surname,
+                'code' => $request->code,
+                'jmbg' => $request->jmbg,
+                'register_date' => $request->register_date,
+                'street' => $request->street,
+                'post_no' => $request->post_no,
+                'city' => $request->city,
+           ]);
+          
+            return redirect('members');  
+
+         }
+
+
+   
+
+
+
+    }
+
+    public function memberProfile($id){
+        $member = Member::find($id);
+        Log::info($member);
+        return view('memberProfile',['member' =>$member]);
+
+    }
+
+    public function editMember($id){
+        $member = Member::find($id);
+        Log::info($member);
+
+        return view('editMember',['member' =>$member]);
+
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -49,6 +125,8 @@ class MemberController extends Controller
         $member->register_date = Carbon::now();
         $member->street = $request->street;
         $member->post_no = $request->post_no;
+        $member->mobile = $request->mobile;
+        $member->status = $request->status;
         $member->city = $request->city;
         $member->image_path = $filename;
         $member->save();

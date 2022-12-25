@@ -54,8 +54,8 @@
     <!-- Footer -->
     <footer class="text-center text-lg-start bg-light text-muted">
         <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
-            © 2022 Copyright:
-            <a class="text-reset fw-bold" href="https://pobjeda.com/">Pobjeda-Rudet dd</a>
+            © 2023 Copyright:
+            <a class="text-reset fw-bold" href="#">GYM</a>
         </div>
         <!-- Copyright -->
     </footer>

@@ -5,7 +5,7 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('ČLANOVI') }}</div>
+                    <div class="card-header">{{ __('ČLANARINA') }}</div>
                     <div class="container">
 
                         <div class="row">
@@ -20,7 +20,8 @@
                                     <div class="col">
                                         <label></label>
                                         <div class="d-flex justify-content-end">
-                                            <button type="submit" class="btn btn-success">Prikaži podatke</button>
+                                        
+                                            <a href="{{ route('createFee',1)}}" class="btn btn-success">Dodaj članarinu</a>
                                         </div>
                                     </div>
                                 </div>
@@ -38,11 +39,11 @@
                                 <tr>
                                     <th scope="col">Ime</th>
                                     <th scope="col">Prezime</th>
-                                    <th scope="col" style="text-align: center">Code</th>
-                                    <th scope="col" style="text-align: center">Grad</th>
+                                    <th scope="col" style="text-align: center">Datum uplate</th>
+                                    <th scope="col" style="text-align: center">Datum početka</th>
+                                    <th scope="col" style="text-align: center">Datum isteka</th> 
                                     <th scope="col" style="text-align: center">Izmijeni</th> 
-                                    <th scope="col" style="text-align: center">Profil</th> 
-                                    <th scope="col" style="text-align: center">Članarina</th> 
+                                    <th scope="col" style="text-align: center">Briši</th> 
 
                                     
                                  
@@ -56,15 +57,15 @@
                                             <td scope="row">{{ $data->surname }}</td>
                                             <td scope="row" style="text-align: center">{{ $data->code }}</td>
                                             <td scope="row" style="text-align: center">{{$data->city}}</td>
-                                            <td scope="row" style="text-align: center" ><a href="{{ route('editMember',$data->id)}}" class="btn btn-warning">Izmijeni</a></td>
-                                            <td scope="row" style="text-align: center" ><a href="{{ route('memberProfile',$data->id)}}" class="btn btn-warning">Profil</a></td>
-                                            <td scope="row" style="text-align: center" ><a href="{{ route('fees',$data->id)}}" class="btn btn-success">Članarina</a></td>
+                                            <td scope="row" style="text-align: center">{{$data->end}}</td>
+                                            <td scope="row" style="text-align: center" ><a href="{{ route('memberProfile',$data->id)}}" class="btn btn-warning">Izmijeni</a></td>
+                                            <td scope="row" style="text-align: center" ><a href="{{ route('memberProfile',$data->id)}}" class="btn btn-danger">Briši</a></td>
                                             
                                         </tr>
                                     @endforeach
                                 @else
                                     <div class="text-center alert alert-success">
-                                        Potrebno je da izaberete vremenski raspon.
+                                        Član nema uplata članarine.
                                     </div>
                                 @endif
                             </tbody>

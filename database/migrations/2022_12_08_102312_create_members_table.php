@@ -18,12 +18,14 @@ class CreateMembersTable extends Migration
             $table->string('name');
             $table->string('surname');
             $table->char('code');
+            $table->string('mobile');
             $table->bigInteger('jmbg');
             $table->date('register_date');
             $table->string('image_path');
             $table->string('street');
             $table->string('post_no');
             $table->string('city');
+            $table->string('status');
             $table->timestamps();
         });
     }

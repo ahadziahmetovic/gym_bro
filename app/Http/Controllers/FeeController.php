@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Fee;
 use App\Http\Requests\StoreFeeRequest;
 use App\Http\Requests\UpdateFeeRequest;
+use App\Models\Member;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class FeeController extends Controller
 {
@@ -13,9 +16,51 @@ class FeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($id)
     {
-        return view('createFee');
+      /*   $test = Member::select("*")
+        ->join("fees", "fees.member_id", "=", "members.id")
+        ->where([
+            ['members.id', '=', $id],
+            
+        ])
+        ->get(); */
+        $test = Member::find($id);
+        Log::info($test);
+
+
+        return view('createFee',['test'=> $test]);
+    }
+
+    public function fees($id){
+
+        $member = Member::select("*")
+            ->join("fees", "fees.member_id", "=", "members.id")
+            ->where([
+                ['members.id', '=', $id],
+                
+            ])->orderBy('fees.id', 'DESC')
+            ->get();
+Log::info($member);
+
+        return view('fees',['stanje' => $member]);
+    }
+
+    public function insertFee(Request $request){
+
+        Log::info($request);
+        //Fee::create($request->all());
+        Fee::create([
+            'amount' => $request->amount,
+            'date' => $request->date,
+            'start'=> $request->start,
+            'end'=> $request->end,
+            'comment' => $request->comment,
+            'member_id' => $request->member_id,
+        ]); 
+
+        return redirect()->route('members');
+
     }
 
     /**

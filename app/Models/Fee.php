@@ -13,8 +13,9 @@ class Fee extends Model
         'date',
         'start',
         'end',
-        'amaount',
-        'comment',     
+        'amount',
+        'comment', 
+        'member_id',    
 
     ];
 }
