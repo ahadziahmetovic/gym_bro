@@ -31,12 +31,13 @@ class MemberController extends Controller
         return view('members',  ['stanje' => $stanje]);
     }
 
-    public function updateMember(Request $request){
+    public function updateMember(Request $request)
+    {
 
-         // dd($request->all());
-         Log::info($request->id);
+        // dd($request->all());
+        Log::info($request->id);
 
-         if ($request->hasFile('image')) {
+        if ($request->hasFile('image')) {
             Log::info('Ima slika');
             Log::info($request);
 
@@ -46,59 +47,52 @@ class MemberController extends Controller
             $file->move($path, $filename);
 
             Member::where('id', $request->id)
-            ->update([
-                'name' => $request->name,         
-                'surname' => $request->surname,
-                'code' => $request->code,
-                'jmbg' => $request->jmbg,
-                'register_date' => $request->register_date,
-                'image_path' => $filename,
-                'mobile' => $request->mobile,
-                'status' => $request->status,
-                'street' => $request->street,
-                'post_no' => $request->post_no,
-                'city' => $request->city,
-           ]);
-          
-            return redirect('members');  
-         }else{
+                ->update([
+                    'name' => $request->name,
+                    'surname' => $request->surname,
+                    'code' => $request->code,
+                    'jmbg' => $request->jmbg,
+                    'register_date' => $request->register_date,
+                    'image_path' => $filename,
+                    'mobile' => $request->mobile,
+                    'status' => $request->status,
+                    'street' => $request->street,
+                    'post_no' => $request->post_no,
+                    'city' => $request->city,
+                ]);
+
+            return redirect('members');
+        } else {
             Log::info('Nema slika');
             Member::where('id', $request->id)
-            ->update([
-                'name' => $request->name,         
-                'surname' => $request->surname,
-                'code' => $request->code,
-                'jmbg' => $request->jmbg,
-                'register_date' => $request->register_date,
-                'street' => $request->street,
-                'post_no' => $request->post_no,
-                'city' => $request->city,
-           ]);
-          
-            return redirect('members');  
+                ->update([
+                    'name' => $request->name,
+                    'surname' => $request->surname,
+                    'code' => $request->code,
+                    'jmbg' => $request->jmbg,
+                    'register_date' => $request->register_date,
+                    'street' => $request->street,
+                    'post_no' => $request->post_no,
+                    'city' => $request->city,
+                ]);
 
-         }
-
-
-   
-
-
-
+            return redirect('members');
+        }
     }
 
-    public function memberProfile($id){
+    public function memberProfile($id)
+    {
         $member = Member::find($id);
         Log::info($member);
-        return view('memberProfile',['member' =>$member]);
-
+        return view('memberProfile', ['member' => $member]);
     }
 
-    public function editMember($id){
+    public function editMember($id)
+    {
         $member = Member::find($id);
         Log::info($member);
 
-        return view('editMember',['member' =>$member]);
-
+        return view('editMember', ['member' => $member]);
     }
 
     /**
@@ -230,9 +224,8 @@ class MemberController extends Controller
     {
         return view('attendance');
     }
-    public function slanje(Request $request)
-    {
-
+    public function slanje(Request $request){
+        
         $id = $request->postObj['id'];
         $date = Carbon::today()->toDateString();
         $end = Member::select("fees.end as rok")
@@ -244,33 +237,47 @@ class MemberController extends Controller
             ->get();
 
 
-        Log::info($end[0]->rok);
-        if ($end[0]->rok >= $date) {
-            Log::info('Aktivan član');
-            Log::info('Carbon: ' . Carbon::now());
-            $user = Member::join('fees', 'fees.member_id', '=', 'members.id')
-                ->where('members.code', $id)
-                ->get(['members.*', 'fees.end as end']);
-            $user_id = $user[0]->id;
-            Log::info(Carbon::today()->toDateString());
-            //Dodaj u evidencije
-
-
-
-            $provjera_evidencije = Attendance::where('member_id', $user_id)->OrderBy('id', 'DESC')->first();
-            Log::info($provjera_evidencije);
-            if ($provjera_evidencije) {
-                
-                if ($provjera_evidencije->status == 1) {
-                    Log::info('Uraditi Logout');
-                    //$provjera_evidencije->update(['out'=>Carbon::now()]);
-                    $provjera_evidencije->out = Carbon::now();
-                    $provjera_evidencije->status = 0;
-                    $provjera_evidencije->save();
-              
-                    $json = json_encode(['response' => $user], true);
-                    echo $json;
-                } elseif ($provjera_evidencije->status == 0) {
+       Log::info($end);
+        if(count($end)>0){
+            if ($end[0]->rok >= $date) {
+                Log::info('Aktivan član');
+                Log::info('Carbon: ' . Carbon::now());
+                $user = Member::join('fees', 'fees.member_id', '=', 'members.id')
+                    ->where('members.code', $id)
+                    ->get(['members.*', 'fees.end as end']);
+                $user_id = $user[0]->id;
+                Log::info(Carbon::today()->toDateString());
+                //Dodaj u evidencije
+    
+    
+    
+                $provjera_evidencije = Attendance::where('member_id', $user_id)->OrderBy('id', 'DESC')->first();
+                // Log::info($provjera_evidencije);
+                if ($provjera_evidencije) {
+    
+                    if ($provjera_evidencije->status == 1) {
+                        Log::info('Uraditi Logout');
+                        //$provjera_evidencije->update(['out'=>Carbon::now()]);
+                        $provjera_evidencije->out = Carbon::now();
+                        $provjera_evidencije->status = 0;
+                        $provjera_evidencije->save();
+    
+                        $json = json_encode(['response' => $user, 'id' => 1], true); // Izlaz
+    
+                        echo $json;
+                    } elseif ($provjera_evidencije->status == 0) {
+                        $evidencije = new Attendance();
+                        $evidencije->in = Carbon::now();
+                        //$evidencije->out= Carbon::now();
+                        $evidencije->date = Carbon::today()->toDateString();
+                        $evidencije->status = 1;
+                        $evidencije->member_id = $user_id;
+                        $evidencije->save();
+                        $json = json_encode(['response' => $user, 'id' => 0], true);   // Ulaz
+                        echo $json;
+                    }
+                } else {
+                    Log::info('Uraditi PRVI LOGIN');
                     $evidencije = new Attendance();
                     $evidencije->in = Carbon::now();
                     //$evidencije->out= Carbon::now();
@@ -278,24 +285,17 @@ class MemberController extends Controller
                     $evidencije->status = 1;
                     $evidencije->member_id = $user_id;
                     $evidencije->save();
-                    $json = json_encode(['response' => $user], true);
+    
+                    $json = json_encode(['response' => $user, 'id' => 0], true);  // Ulaz
                     echo $json;
                 }
-            } else {
-                Log::info('Uraditi PRVI LOGIN');
-                $evidencije = new Attendance();
-                $evidencije->in = Carbon::now();
-                //$evidencije->out= Carbon::now();
-                $evidencije->date = Carbon::today()->toDateString();
-                $evidencije->status = 1;
-                $evidencije->member_id = $user_id;
-                $evidencije->save();
+            } 
 
-                $json = json_encode(['response' => $user], true);
-                echo $json;
-            }
-        } else {
-            $json = json_encode(['response' => $id], true);
+        }
+        else {
+            Log::info('Neaktivan član');
+            $user = Member::where('code',$id)->first();
+            $json = json_encode(['response' => $user,'id' => 2], true);  // Članarina je istekla
             echo $json;
         }
 

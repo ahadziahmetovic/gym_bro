@@ -39,10 +39,12 @@ document.querySelector('#sifra').addEventListener('keypress', function (e) {
       /* remind that 'data' is the response of the AjaxController */
       success: function (data) {
         console.log(data);
+        var id = data['id'];
+        
 
         /* Datum isteka članarine */
         var end = data['response'][0].end;
-
+        
         /* Slika člana */
         var picture = data['response'][0].image_path;
 
@@ -59,12 +61,22 @@ document.querySelector('#sifra').addEventListener('keypress', function (e) {
         /* Provjera isteka članarine */
         if (trenutni_datum <= end) {
           console.log('Članarina nije istekla');
+          console.log(id);
           $('#okvir').removeClass("bg-danger");
           //$('#okvir').addClass("bg-success");
-          $('#okvir').css("background-color", "#89F457");
+          //$('#okvir').css("background-color", "#89F457");
           $("#status").text('');
           $("#status").text('ČLANARINA JE PLAĆENA');
-          $("#inout").text('PRIJAVA').addClass("bg-success font-weight-bold rounded");
+          if(id==0){
+            $('#inout').removeClass("bg-warning");
+            $("#inout").text('PRIJAVA').addClass("bg-success font-weight-bold rounded");
+          }
+          else if(id==1){
+            $('#inout').removeClass("bg-success");
+            $("#inout").text('ODJAVA').addClass("bg-warning font-weight-bold rounded");
+
+          }
+          
         } else {
           console.log('Članarina je istekla');
           $('#okvir').removeClass("bg-success");  

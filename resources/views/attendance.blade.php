@@ -19,7 +19,7 @@
                                         <p class="text-muted mb-1">STATUS</p>
                                         <p id="status" name="status" class="mb-8">PRIJAVA / ODJAVA</p>
                                         <div class="d-flex justify-content-center mb-2">
-                                            <p id="inout" name="status" class="mb-8"></p>
+                                            <p id="inout" name="status" class="mb-8 h4" style="color:white"></p>
                                         {{--  <button type="button" class="btn btn-primary">Follow</button> --}}
                                         {{--  <button type="button" class="btn btn-outline-primary ms-1">Message</button> --}}
                                         </div>

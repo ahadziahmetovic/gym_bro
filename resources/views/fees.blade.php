@@ -20,8 +20,8 @@
                                     <div class="col">
                                         <label></label>
                                         <div class="d-flex justify-content-end">
-                                        
-                                            <a href="{{ route('createFee',1)}}" class="btn btn-success">Dodaj članarinu</a>
+                                    
+                                            <a href="{{ route('createFee',$id)}}" class="btn btn-success">Dodaj članarinu</a>
                                         </div>
                                     </div>
                                 </div>
@@ -58,8 +58,8 @@
                                             <td scope="row" style="text-align: center">{{ $data->code }}</td>
                                             <td scope="row" style="text-align: center">{{$data->city}}</td>
                                             <td scope="row" style="text-align: center">{{$data->end}}</td>
-                                            <td scope="row" style="text-align: center" ><a href="{{ route('memberProfile',$data->id)}}" class="btn btn-warning">Izmijeni</a></td>
-                                            <td scope="row" style="text-align: center" ><a href="{{ route('memberProfile',$data->id)}}" class="btn btn-danger">Briši</a></td>
+                                            <td scope="row" style="text-align: center" ><a href="{{ route('memberProfile',$data->member_id)}}" class="btn btn-warning">Izmijeni</a></td>
+                                            <td scope="row" style="text-align: center" ><a href="{{ route('feesDelete',$data->id)}}" class="btn btn-danger">Briši</a></td>
                                             
                                         </tr>
                                     @endforeach

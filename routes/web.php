@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\FeeController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\HomeController;
+use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +39,8 @@ Route::group([
     Route::get('/attendance', [MemberController::class, 'attendance'])->name('attendance');
     Route::get('/editMember/{id}', [MemberController::class, 'editMember'])->name('editMember');
     Route::get('/memberProfile/{id}', [MemberController::class, 'memberProfile'])->name('memberProfile');
+    Route::get('/feesDelete/{id}', [FeeController::class, 'destroy'])->name('feesDelete');
+    Route::get('/attendance-list', [AttendanceController::class, 'index'])->name('attendance-list');
     Route::get('/fees/{id}', [FeeController::class, 'fees'])->name('fees');
     Route::post('/slanje', [MemberController::class, 'slanje'])->name('slanje');
     Route::post('/insertFee', [FeeController::class, 'insertFee'])->name('insertFee');

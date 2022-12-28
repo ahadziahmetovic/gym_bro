@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Attendance;
 use App\Http\Requests\StoreAttendanceRequest;
 use App\Http\Requests\UpdateAttendanceRequest;
+use App\Models\Member;
+use Illuminate\Support\Facades\Log;
 
 class AttendanceController extends Controller
 {
@@ -15,7 +17,13 @@ class AttendanceController extends Controller
      */
     public function index()
     {
-        //
+        $att = Member::select("*")
+            ->join("attendances", "attendances.member_id", "=", "members.id")
+            ->orderBy('attendances.id', 'DESC')
+            ->paginate(15);
+
+        Log::info($att);
+        return view('attendance-list', ['att' => $att]);
     }
 
     /**

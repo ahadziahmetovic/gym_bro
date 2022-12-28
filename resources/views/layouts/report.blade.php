@@ -35,7 +35,24 @@
 </head>
 
 <body>
-    <div id="app">
+    <ul class="nav  nav-pills justify-content-center mt-4">
+        <li class="nav-item">
+            <a class="nav-item nav-link active" href="{{ route('members') }}">Članovi</a>
+        </li>
+        <li class="nav-item mx-2">
+          <a class="nav-link bg-info" href="{{ route('attendance-list') }}">Evidencije članova</a>
+        </li>
+        <li class="nav-item mx-2">
+          <a class="nav-link border" href="{{ route('createMember') }}" style="background-color: rgba(201, 63, 63, 0.05);">Kreiraj člana</a>
+        </li>
+        <li class="nav-item mx-2">
+            <a class="nav-link border" href="{{ route('attendance') }}" style="background-color:rgb(95, 152, 226);color:white">Prijava</a>
+          </li>
+        <li class="nav-item mx-2">
+          <a class="nav-link disabled bg-secondary" href="#" tabindex="-1" aria-disabled="true" style="color:white">Admin</a>
+        </li>
+      </ul>
+    {{-- <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <a class="navbar-brand" href="{{ url('/') }}">
                 <img src="{{ asset('/images/logo.png') }}" class="logo" />
@@ -45,7 +62,7 @@
                 </ul>
             </div>
     </div>
-    </nav>
+    </nav> --}}
 
     <main class="py-4">
         @yield('content')

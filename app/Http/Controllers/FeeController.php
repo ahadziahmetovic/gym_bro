@@ -33,7 +33,7 @@ class FeeController extends Controller
     }
 
     public function fees($id){
-
+    
         $member = Member::select("*")
             ->join("fees", "fees.member_id", "=", "members.id")
             ->where([
@@ -43,7 +43,7 @@ class FeeController extends Controller
             ->get();
 Log::info($member);
 
-        return view('fees',['stanje' => $member]);
+        return view('fees',['stanje' => $member, 'id'=>$id]);
     }
 
     public function insertFee(Request $request){
@@ -124,8 +124,9 @@ Log::info($member);
      * @param  \App\Models\Fee  $fee
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Fee $fee)
+    public function destroy($id)
     {
-        //
+        Fee::where('id',$id)->delete();
+        return redirect()->route('members');
     }
 }
