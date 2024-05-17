@@ -1,4 +1,4 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/begsfitf/public_html/gym_new
+    - export DEPLOYPATH=/home/begsfitf/public_html/gym
     - /bin/cp -R * $DEPLOYPATH
