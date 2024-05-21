@@ -22,8 +22,17 @@ class AttendanceController extends Controller
             ->orderBy('attendances.id', 'DESC')
             ->paginate(15);
 
-        Log::info($att);
+        //Log::info($att);
         return view('attendance-list', ['att' => $att]);
+    }
+
+    public function memberslive(){
+        $att = Member::select("*")
+            ->join("attendances", "attendances.member_id", "=", "members.id")
+            ->where("attendances.status",1)
+            ->orderBy('attendances.id', 'DESC')->get();
+
+            return response()->json($att);
     }
 
     /**

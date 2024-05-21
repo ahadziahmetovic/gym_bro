@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttendanceController;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -23,6 +24,8 @@ Route::middleware('auth:api')->group(function () {
         return $request->user();  // Assuming you meant to return the authenticated user
     });
 
+    Route::get('memberslive', [AttendanceController::class, 'memberslive']);
+
     Route::get('/members', function (Request $request) {
         return $request->user()->members(); // Adjust this based on your relationships
     });
@@ -44,6 +47,8 @@ Route::post('/login', function (Request $request) {
 
     return response()->json(['error' => 'Unauthenticated'], 401);
 });
+
+
 
 // Public route to check API status
 Route::get('/check', function () {
