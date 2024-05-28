@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\MemberController;
 use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+
 
 
 
@@ -25,6 +27,8 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::get('memberslive', [AttendanceController::class, 'memberslive']);
+
+    Route::post('/member/{id}', [MemberController::class, 'show']);
 
     Route::get('/members', function (Request $request) {
         return $request->user()->members(); // Adjust this based on your relationships

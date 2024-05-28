@@ -27,7 +27,7 @@ class AttendanceController extends Controller
     }
 
     public function memberslive(){
-        $att = Member::select("*")
+        $att = Member::select("name, surname, email,gym")
             ->join("attendances", "attendances.member_id", "=", "members.id")
             ->where("attendances.status",1)
             ->orderBy('attendances.id', 'DESC')->get();

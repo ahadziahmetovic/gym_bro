@@ -14,8 +14,13 @@ class Fee extends Model
         'start',
         'end',
         'amount',
-        'comment', 
-        'member_id',    
+        'comment',
+        'member_id',
 
     ];
+
+    public function member()
+    {
+        return $this->belongsTo(Member::class);
+    }
 }

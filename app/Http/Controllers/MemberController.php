@@ -6,6 +6,7 @@ use App\Http\Requests\StoreMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
 use App\Models\Attendance;
 use App\Models\Member;
+use App\Models\Fee;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon as SupportCarbon;
@@ -183,9 +184,22 @@ class MemberController extends Controller
      * @param  \App\Models\Member  $member
      * @return \Illuminate\Http\Response
      */
-    public function show(Member $member)
+    public function show($id)
     {
-        //
+        $member = Member::with(['fees' => function($query) {
+            $query->orderBy('created_at', 'desc')->first();
+        }])->find($id);
+
+        if (!$member) {
+            return response()->json(['error' => 'Member not found'], 404);
+        }
+
+        $lastFee = $member->fees->first();
+
+        return response()->json([
+            'member' => $member,
+            'last_fee' => $lastFee
+        ]);
     }
 
     /**
